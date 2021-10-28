@@ -1,4 +1,4 @@
-// TODO: Include packages needed for this application
+// TODO: Include packages needed for this applications
 
 // TODO: Create an array of questions for user input
 const questions = [];
