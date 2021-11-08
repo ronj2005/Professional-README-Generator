@@ -36,16 +36,15 @@ Open the index.html file in your browser of choice.
 By clicking the links in the navigation bar, users will be able to access content associated to those links.
 
 
+## Generated README:
 
-Generated HTML:
-
-![alt text](assets/images/Screen Shot 2021-11-07 at 8.23.58 PM.png)
+![alt text](assets/images/Screen_Shot_2021-11-07_at_8.23.58_PM.png)
 
  
 
-Prompt Question in Terminal:
+## Prompt Question in Terminal:
 
-![alt text](assets/images/Screen Shot 2021-11-07 at 8.23.07 PM.png)
+![alt text](assets/images/Screen_Shot_2021-11-07_at8.23.07_PM.png)
 
 video link: https://watch.screencastify.com/v/X7kRFPExTlZuYkM5V95r
 
