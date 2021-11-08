@@ -1,81 +1,92 @@
-// Included packages needed for this application
+// dependency variables
 const inquirer = require("inquirer");
 const fs = require("fs");
-const generateMarkdown = require("./utils/generateMarkdown.js")
+const util = require("util");
+const path = require("path");
+// generate markdown varables
+const generateMarkdown = require("./utils/generateMarkdown");
+const writeAsync = util.promisify(fs.writeFile);
 
-// Created an array of questions for user input
-inquirer
-    .prompt([
-     {   
-        type: 'input',
-        message: 'What is the title of your project?',
-        name: 'title',
-    },
+// README file path
+const OUTPUT_DIR = path.resolve(__dirname, "output");
+const outputPath = path.join(OUTPUT_DIR, "README.md");
 
+// array of prompts to generate readme file
+const prompts = [
     {
-        type: 'input',
-        message: 'Please give a brief decription of your project.',
-        name: 'description',
+        message: "Please enter the title of your project.",
+        name: "title",
+        type: "input"
     },
-
     {
-        type: 'checkbox',
-        message: 'Please select which language(s) you use.',
-        choices: ["HTML", " CSS", " Javascript", " Python", " Java", "Node", "React"],
-        name: 'languages',
+        message: "Please enter project description:",
+        name: "description",
+        type: "input"
     },
-
     {
-        type: 'input',
-        message: 'Please provide installation instructions.',
-        name: 'installInstructions',
+        message: "Please provide installation instructions:",
+        name: "installation",
+        type: "input",
+        default: "node index.js"
     },
-
     {
-        type: 'input',
-        message: 'Please provide usage information.',
-        name: 'usageInformation',
+        message: "Please provide usage information:",
+        name: "usage",
+        type: "input"
     },
-
     {
-        type: 'input',
-        message: 'Please provide contribution guidelines.',
-        name: 'contributionGuidelines',
+        message: "What are your contributors and contribution guidelines?",
+        name: "contribution",
+        type: "input",
+        default: "Contributor Covenant"
     },
-
     {
-        type: 'input',
-        message: 'Please provide test instructions:',
-        name: 'testInstructions',
+        message: "What command should be entered to run tests?",
+        name: "test",
+        type: "input",
+        default: "npm run test"
     },
-
     {
-        type: 'list',
-        message: 'Please select provided license(s)',
-        choices: ["Apache License 2.0", "MIT License","Boost Software License 1.0"],
-        name: 'license',
+        message: "Choose a license:",
+        choices: ["Apache 2.0", "MIT", "GPL 3.0", "Unlicense"],
+        name: "license",
+        type: "list"
     },
-
     {
-        type: 'input',
-        message: 'What is your Github username?',
-        name: 'githubUsername',
-
+        message: "GitHub username:",
+        name: "username",
+        type: "input"
     },
-
     {
-        type: 'input',
-        message: 'What is your e-mail address?',
-        name: 'email',
+        message: "Email address:",
+        name: "email",
+        type: "input"
+    }
+];
 
-    },
 
-    ])
+//function to run this app
+async function init() {
+    //get responses
+    const responses = await inquirer.prompt(prompts);
 
-   generateMarkdown
-// Created a function to write README file
-   .then((data) => {
-    fs.writeFile("README2.md", generateMarkdown(data), (err) => 
-      err ? console.log(err) : console.log(data)
-    );
-  });
+    if (fs.existsSync(OUTPUT_DIR)) {
+        console.log("Output Path Exists.");
+      } else {
+        fs.mkdir(OUTPUT_DIR, function (err) {
+          if (err) {
+            return console.error(err);
+          }
+          console.log("Directory created successfully");
+        });
+      }
+    // generates the README.md
+    const htmlString = generateMarkdown(responses);
+    // save to file to outputs folder
+    await writeAsync(outputPath, htmlString);
+}
+
+// call the function to run this app
+init();
+
+
